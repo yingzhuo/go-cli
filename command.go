@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// Command is a subcommand for a cli.App
+// Command is a sub-command for a cli.App
 type Command struct {
 	// The name of the program. Defaults to path.Base(os.Args[0])
 	Name string
@@ -37,7 +37,7 @@ type Command struct {
 	// Display full help
 	ShowHelp func(*HelpContext)
 
-	// The action to execute when no subcommands are specified
+	// The action to execute when no sub-commands are specified
 	Action func(*Context)
 
 	// Execute this function if the proper command cannot be found

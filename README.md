@@ -214,6 +214,7 @@ app.Run(os.Args)
     - `*time.Time`, `*time.Duration`, `*time.Location`
     - `*net.IP`, `*net.IPMask`, `*net.IPNet`
     - `*url.URL`
+    - `*os.FileMode*`
 
 - **slice of base type:**
     - `*[]string`

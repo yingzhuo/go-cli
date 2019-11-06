@@ -94,6 +94,8 @@ func (f *Flag) initialize() {
 			f.wrapValue = &urlValue{val}
 		case *[]url.URL:
 			f.wrapValue = &urlSliceValue{val}
+		case *os.FileMode:
+			f.wrapValue = &fileModeValue{val}
 		case Value:
 			f.wrapValue = val
 		default:

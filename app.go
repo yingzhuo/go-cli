@@ -8,6 +8,7 @@ import (
 
 // App is the main structure of a cli application
 type App struct {
+
 	// The name of the program. Defaults to path.Base(os.Args[0])
 	Name string
 	// The version of the program
@@ -42,7 +43,7 @@ type App struct {
 	// Display full version
 	ShowVersion func(*App)
 
-	// The action to execute when no subcommands are specified
+	// The action to execute when no sub-commands are specified
 	Action func(*Context)
 
 	// Execute this function if the proper command cannot be found
@@ -116,6 +117,7 @@ func (a *App) Run(arguments []string) {
 	if newCtx.GetBool("help") {
 		newCtx.ShowHelpAndExit(0)
 	}
+
 	// show --version
 	if newCtx.GetBool("version") {
 		a.ShowVersion(a)

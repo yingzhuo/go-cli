@@ -3,3 +3,6 @@
 
 # Goland
 .idea/
+
+## testing
+**/main.go

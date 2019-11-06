@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// exit variable for tesing hook
+// exit variable for testing hook
 var exit = os.Exit
 
 // Context is a type that is passed through to

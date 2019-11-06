@@ -12,7 +12,7 @@ type BuildInfo struct {
 	GitRevCount string
 }
 
-// ParseBuildInfo parse a buildinfo string info struct
+// ParseBuildInfo parse a build-info string info struct
 func ParseBuildInfo(info string) *BuildInfo {
 	return &BuildInfo{
 		Timestamp:   _readValue(info, "time"),
