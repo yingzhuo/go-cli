@@ -50,6 +50,9 @@ type App struct {
 
 	// Handler if panic in app.Action() and command.Action()
 	OnActionPanic func(*Context, error)
+
+	// Init hook
+	InitHook func()
 }
 
 // NewApp creates a new cli Application
@@ -128,6 +131,11 @@ func (a *App) Run(arguments []string) {
 			newCtx.ShowError(fmt.Errorf("no such command: %s", cmd))
 		}
 		return
+	}
+
+	// init hook
+	if a.InitHook != nil {
+		a.InitHook()
 	}
 
 	// run command

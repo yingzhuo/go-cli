@@ -2,6 +2,7 @@ package cli
 
 import (
 	"strconv"
+	"strings"
 )
 
 type boolValue struct {
@@ -9,7 +10,7 @@ type boolValue struct {
 }
 
 func (v *boolValue) Set(value string) error {
-	switch value {
+	switch strings.ToLower(strings.TrimSpace(value)) {
 	case "1", "t", "true", "on", "yes", "y":
 		*v.val = true
 	case "0", "f", "false", "off", "no", "n":
