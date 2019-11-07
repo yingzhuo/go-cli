@@ -100,7 +100,7 @@ func newCommandHelpContext(name string, cmd *Command, app *App) *HelpContext {
 	}
 }
 
-// Level return command/subcommand's level
+// Level return command/sub-command's level
 func (c *HelpContext) Level() int {
 	return strings.Count(c.Name, " ")
 }

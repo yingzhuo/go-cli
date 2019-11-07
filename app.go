@@ -53,7 +53,7 @@ type App struct {
 	OnActionPanic func(*Context, error)
 
 	// Init hook
-	InitHook func()
+	OnAppInitialized func(*Context)
 }
 
 // NewApp creates a new cli Application
@@ -136,8 +136,9 @@ func (a *App) Run(arguments []string) {
 	}
 
 	// init hook
-	if a.InitHook != nil {
-		a.InitHook()
+	if a.OnAppInitialized != nil {
+		defer newCtx.handlePanic()
+		a.OnAppInitialized(newCtx)
 	}
 
 	// run command
