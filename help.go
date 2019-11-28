@@ -317,7 +317,10 @@ func showVersion(app *App) {
 			fmt.Fprintf(helpWriter, "Git commit: %s\n", build.GitCommit)
 		}
 		if build.Timestamp != "" {
-			fmt.Fprintf(helpWriter, "Built:      %s\n", build.Timestamp)
+			fmt.Fprintf(helpWriter, "Date:       %s\n", build.Timestamp)
+		}
+		if build.BuiltBy != "" {
+			fmt.Fprintf(helpWriter, "Built by:   %s\n", build.BuiltBy)
 		}
 	}
 

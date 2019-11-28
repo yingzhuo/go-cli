@@ -10,6 +10,7 @@ type BuildInfo struct {
 	GitBranch   string
 	GitCommit   string
 	GitRevCount string
+	BuiltBy     string
 }
 
 // ParseBuildInfo parse a build-info string info struct
@@ -19,6 +20,7 @@ func ParseBuildInfo(info string) *BuildInfo {
 		GitBranch:   _readValue(info, "branch"),
 		GitCommit:   _readValue(info, "commit"),
 		GitRevCount: _readValue(info, "patches"),
+		BuiltBy:     _readValue(info, "built-by"),
 	}
 }
 
