@@ -39,6 +39,10 @@ type App struct {
 	HiddenHelp    bool
 	HiddenVersion bool
 
+	// Disable --help and --version
+	DisableHelp    bool
+	DisableVersion bool
+
 	// Display full help
 	ShowHelp func(*HelpContext)
 	// Display full version
@@ -71,21 +75,26 @@ func NewApp() *App {
 }
 
 func (a *App) initialize() {
-	// add --help
-	a.Flags = append(a.Flags, &Flag{
-		Name:   "h, help",
-		Usage:  "print this usage",
-		IsBool: true,
-		Hidden: a.HiddenHelp,
-	})
 
-	// add --version
-	a.Flags = append(a.Flags, &Flag{
-		Name:   "v, version",
-		Usage:  "print version information",
-		IsBool: true,
-		Hidden: a.HiddenVersion,
-	})
+	// add --help if enabled
+	if ! a.DisableHelp {
+		a.Flags = append(a.Flags, &Flag{
+			Name:   "h, help",
+			Usage:  "print this usage",
+			IsBool: true,
+			Hidden: a.HiddenHelp,
+		})
+	}
+
+	// add --version if enabled
+	if ! a.DisableVersion {
+		a.Flags = append(a.Flags, &Flag{
+			Name:   "v, version",
+			Usage:  "print version information",
+			IsBool: true,
+			Hidden: a.HiddenVersion,
+		})
+	}
 
 	// initialize flags
 	for _, f := range a.Flags {

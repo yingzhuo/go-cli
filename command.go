@@ -7,7 +7,7 @@ import (
 
 // Command is a sub-command for a cli.App
 type Command struct {
-	// The name of the program. Defaults to path.Base(os.Args[0])
+	// The name of the program.
 	Name string
 	// Short description of the program.
 	Usage string
@@ -27,6 +27,8 @@ type Command struct {
 
 	// hidden --help from usage
 	HiddenHelp bool
+	// disable --help
+	DisableHelp bool
 
 	// Treat all flags as normal arguments if true
 	SkipFlagParsing bool
@@ -45,13 +47,16 @@ type Command struct {
 }
 
 func (c *Command) initialize() {
+
 	// add --help
-	c.Flags = append(c.Flags, &Flag{
-		Name:   "help",
-		Usage:  "print this usage",
-		IsBool: true,
-		Hidden: c.HiddenHelp,
-	})
+	if !c.DisableHelp {
+		c.Flags = append(c.Flags, &Flag{
+			Name:   "h, help",
+			Usage:  "print this usage",
+			IsBool: true,
+			Hidden: c.HiddenHelp,
+		})
+	}
 
 	// initialize flags
 	for _, f := range c.Flags {
@@ -59,7 +64,7 @@ func (c *Command) initialize() {
 	}
 }
 
-// Run is the entry point to the command, parse argument and call Execute() or subcommand.Execute()
+// Run is the entry point to the command, parse argument and call Execute() or sub-command.Execute()
 func (c *Command) Run(ctx *Context) {
 	c.initialize()
 

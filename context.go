@@ -222,7 +222,7 @@ func (c *Context) GetFloat64(name string) float64 {
 	if f != nil {
 		v, err := strconv.ParseFloat(f.GetValue(), 64)
 		if err == nil {
-			return float64(v)
+			return v
 		}
 	}
 	return 0
