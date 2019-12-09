@@ -55,9 +55,8 @@ type App struct {
 
 	// Init hook
 	OnAppInitialized func(*Context)
-
-	// terminating hook
-	OnAppTerminating func(*Context, chan os.Signal)
+	// Terminating hook
+	OnAppTerminating func(*Context)
 }
 
 // NewApp creates a new cli Application
@@ -74,14 +73,15 @@ func NewApp() *App {
 func (a *App) initialize() {
 	// add --help
 	a.Flags = append(a.Flags, &Flag{
-		Name:   "help",
+		Name:   "h, help",
 		Usage:  "print this usage",
 		IsBool: true,
 		Hidden: a.HiddenHelp,
 	})
+
 	// add --version
 	a.Flags = append(a.Flags, &Flag{
-		Name:   "version",
+		Name:   "v, version",
 		Usage:  "print version information",
 		IsBool: true,
 		Hidden: a.HiddenVersion,
@@ -153,7 +153,10 @@ func (a *App) Run(arguments []string) {
 		go func() {
 			select {
 			case <-signalChan:
-				a.OnAppTerminating(newCtx, signalChan)
+				signal.Stop(signalChan)    // once is enough
+				a.OnAppTerminating(newCtx) // call the hook
+				close(signalChan)
+				syscall.Kill(os.Getpid(), syscall.SIGTERM) // sent the signal to self
 			}
 		}()
 	}
