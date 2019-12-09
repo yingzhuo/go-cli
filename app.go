@@ -3,9 +3,7 @@ package cli
 import (
 	"fmt"
 	"os"
-	"os/signal"
 	"path/filepath"
-	"syscall"
 )
 
 // App is the main structure of a cli application
@@ -59,8 +57,9 @@ type App struct {
 
 	// Init hook
 	OnAppInitialized func(*Context)
-	// Terminating hook
-	OnAppTerminating func(*Context)
+
+	//// Terminating hook (deleted in v2.0.9)
+	//OnAppTerminating func(*Context)
 }
 
 // NewApp creates a new cli Application
@@ -154,21 +153,21 @@ func (a *App) Run(arguments []string) {
 		a.OnAppInitialized(newCtx)
 	}
 
-	// terminating hook
-	if a.OnAppTerminating != nil {
-		signalChan := make(chan os.Signal, 1)
-		signal.Notify(signalChan, syscall.SIGTERM) // 0xf = 15
-
-		go func() {
-			select {
-			case <-signalChan:
-				signal.Stop(signalChan)    // once is enough
-				a.OnAppTerminating(newCtx) // call the hook
-				close(signalChan)
-				syscall.Kill(os.Getpid(), syscall.SIGTERM) // sent the signal to self
-			}
-		}()
-	}
+	// terminating hook (deleted v2.0.9)
+	//if a.OnAppTerminating != nil {
+	//	signalChan := make(chan os.Signal, 1)
+	//	signal.Notify(signalChan, syscall.SIGTERM) // 0xf = 15
+	//
+	//	go func() {
+	//		select {
+	//		case <-signalChan:
+	//			signal.Stop(signalChan)    // once is enough
+	//			a.OnAppTerminating(newCtx) // call the hook
+	//			close(signalChan)
+	//			syscall.Kill(os.Getpid(), syscall.SIGTERM) // sent the signal to self
+	//		}
+	//	}()
+	//}
 
 	// run command
 	if cl.command != nil {
