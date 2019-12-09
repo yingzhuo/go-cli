@@ -3,12 +3,13 @@ package cli
 import (
 	"fmt"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"syscall"
 )
 
 // App is the main structure of a cli application
 type App struct {
-
 	// The name of the program. Defaults to path.Base(os.Args[0])
 	Name string
 	// The version of the program
@@ -54,6 +55,9 @@ type App struct {
 
 	// Init hook
 	OnAppInitialized func(*Context)
+
+	// terminating hook
+	OnAppTerminating func(*Context, chan os.Signal)
 }
 
 // NewApp creates a new cli Application
@@ -139,6 +143,19 @@ func (a *App) Run(arguments []string) {
 	if a.OnAppInitialized != nil {
 		defer newCtx.handlePanic()
 		a.OnAppInitialized(newCtx)
+	}
+
+	// terminating hook
+	if a.OnAppTerminating != nil {
+		signalChan := make(chan os.Signal, 1)
+		signal.Notify(signalChan, syscall.SIGTERM) // 0xf = 15
+
+		go func() {
+			select {
+			case <-signalChan:
+				a.OnAppTerminating(newCtx, signalChan)
+			}
+		}()
 	}
 
 	// run command
